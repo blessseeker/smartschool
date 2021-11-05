@@ -15,7 +15,7 @@ class AdjustUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('username')->unique();
-            $table->enum('role', ['ADMIN', 'TEACHER', 'STUDENT']);
+            $table->string('role');
             $table->integer('school_id');
             $table->dropColumn('name');
         });
