@@ -12,7 +12,7 @@
                     <h1 class="auth-title">Log in.</h1>
                     <p class="auth-subtitle mb-5">Log in with your data that you entered during registration.</p>
 
-                    <form action="index.html">
+                    <form action="{{ route('login') }}">
                         <div class="form-group position-relative has-icon-left mb-4">
                             <input type="text" class="form-control form-control-xl @error('email') is-invalid @enderror"
                                 placeholder="Username" value="{{ old('username') }}">
@@ -53,7 +53,7 @@
                         <p class="text-gray-600">Don't have an account? <a href="{{ route('register') }}"
                                 class="font-bold">Sign
                                 up</a>.</p>
-                        <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a>.</p>
+                        {{-- <p><a class="font-bold" href="auth-forgot-password.html">Forgot password?</a></p> --}}
                     </div>
                 </div>
             </div>
