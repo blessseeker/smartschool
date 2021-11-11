@@ -14,10 +14,19 @@ class UserController extends Controller
      */
     public function index()
     {
+        if (!Auth::check()) {
+            return redirect('login');
+        }
+
         $school_id = Auth::user()->school_id;
         $users = \App\Models\User::where('school_id', $school_id)->get();
-        
-        return view('users.index', compact('users'));
+
+        if (Auth::user()->role === 'ADMIN') {
+            return view('users.admin', compact('users'));
+        } else {
+            return view('users.teacher_student', compact('users'));
+        }
+
     }
 
     /**

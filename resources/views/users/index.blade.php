@@ -19,41 +19,51 @@
                 </div>
             </div>
             <section>
-                <div class="card">
-                    <div class="card-header">Users List
-                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <a href="#" class="btn btn-primary me-md-2">Add New User</a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-striped" id="usersTable">
-                            <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>Email</th>
-                                    <th>Username</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                        <?php $i = 0; ?>
-                                    @foreach ($users as $user)
-                                        <?php $i++; ?>
-                                        <td>{{ $i }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ $user->username }}</td>
-                                        <td>{{ $user->role }}</td>
-                                        <td>
-                                            <button class="btn btn-warning"><i class="bi bi-pencil"></i></button>
-                                            <button class="btn btn-danger"><i class="bi bi-trash"></i></button></td>
-                                    @endforeach
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                @yield('card')
             </section>
+        </div>
+        <div class="modal fade text-left" id="addNewUserModal" tabindex="-1"
+            role="dialog" aria-labelledby="myModalLabel33" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+                role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel33">Add New User </h4>
+                        <button type="button" class="close" data-bs-dismiss="modal"
+                            aria-label="Close">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <form action="#">
+                        <div class="modal-body">
+                            <label>Email: </label>
+                            <div class="form-group">
+                                <input type="text" placeholder="Email Address"
+                                    class="form-control">
+                            </div>
+                            <label>Role: </label>
+                            <div class="form-group">
+                                <select name="role" id="role" class="form-control">
+                                    <option value="ADMIN">School Admin</option>
+                                    <option value="TEACHER">Teacher</option>
+                                    <option value="STUDENT">Student</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light-secondary"
+                                data-bs-dismiss="modal">
+                                <i class="bx bx-x d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Close</span>
+                            </button>
+                            <button type="button" class="btn btn-primary ml-1"
+                                data-bs-dismiss="modal">
+                                <i class="bx bx-check d-block d-sm-none"></i>
+                                <span class="d-none d-sm-block">Send Invitation</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
 @endsection
