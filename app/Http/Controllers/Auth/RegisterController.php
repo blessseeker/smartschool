@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
+use App\Models\School;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -65,12 +66,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $left_id = 'SCH'.date('y').date('m');
+        $school = new School();
+        $school_id = $school->createNewSchoolID($left_id);
+
+        $school = School::create([
+            'school_id' => $school_id,
+            'school_name' => $data['school_name']
+        ]);
+
         return User::create([
             'email' => $data['email'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
-            'role' => json_encode(['ADMIN']),
-            'school_id' => 1,
+            'role' => 'ADMIN',
+            'school_id' => $school->id,
         ]);
     }
 }
