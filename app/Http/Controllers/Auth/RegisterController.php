@@ -71,7 +71,7 @@ class RegisterController extends Controller
         $school_id = $school->createNewSchoolID($left_id);
 
         $school = School::create([
-            'school_id' => $school_id,
+            'id' => $school_id,
             'school_name' => $data['school_name']
         ]);
 

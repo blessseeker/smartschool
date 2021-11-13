@@ -8,7 +8,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Smartschool') }}</title>
+    <title>{{ config('app.name', 'Smartschool') }} @auth
+        | {{Auth::user()->school->school_name}}
+    @endauth</title>
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
@@ -53,7 +55,7 @@
                             <li class="sidebar-item  ">
                                 <a href="index.html" class='sidebar-link'>
                                     <i class="bi bi-person"></i>
-                                    <span>User List</span>
+                                    <span>Users List</span>
                                 </a>
                             </li>
         

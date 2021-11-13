@@ -14,7 +14,7 @@ class School extends Model
 
     public function createNewSchoolID($left_id)
     {
-        $latest_right_id = DB::select("select MAX(RIGHT(school_id,3)) as max_id from schools where LEFT(school_id, 7) = '".$left_id."'");
+        $latest_right_id = DB::select("select MAX(RIGHT(id,3)) as max_id from schools where LEFT(id, 7) = '".$left_id."'");
         $new_right_id = "";
         if(count($latest_right_id)>0) {
             $int_new_right_id = ((int)$latest_right_id[0]->max_id)+1;
@@ -23,5 +23,10 @@ class School extends Model
             $new_right_id = "001";
         }   
         return $left_id."".$new_right_id;
+    }
+
+    public function user()
+    {
+        return $this->hasMany(User::class, 'school_id');
     }
 }
