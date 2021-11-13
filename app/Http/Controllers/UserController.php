@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -81,7 +82,16 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = \App\Models\User::findOrFail($id);
+        if ($user->role == 'ADMIN') {
+            $school_admin = $user->school_admin;
+            $school_admin->full_name = $request->get('full_name');
+            $school_admin->save();
+        }
+        $user->password = Hash::make($request->get('password'));
+        if ($user->save()) {
+            return redirect('users')->with('status', 'User '.$user->username.' updated successfully');
+        }
     }
 
     /**
@@ -92,6 +102,14 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = \App\Models\User::findOrFail($id);
+        
+        if ($user->delete()) {
+            if ($user->role == 'ADMIN') {
+                $school_admin = $user->school_admin;
+                $school_admin->delete();
+            }
+            return redirect('users')->with('status', 'User '.$user->username.' deleted successfully');
+        }
     }
 }

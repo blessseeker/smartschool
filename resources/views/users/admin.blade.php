@@ -1,6 +1,11 @@
 @extends('users.index')
     @section('card')
                 <div class="card">
+                    @if(session('status'))
+                        <div class="alert alert-success">
+                            {{session('status')}}
+                        </div>
+                    @endif
                     <div class="card-header">Users List
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                             <a class="btn btn-primary me-md-2" data-bs-toggle="modal" data-bs-target="#addNewUserModal">Invite New User</a>
@@ -11,6 +16,7 @@
                             <thead>
                                 <tr>
                                     <th>#</th>
+                                    <th>Full Name</th>
                                     <th>Email</th>
                                     <th>Username</th>
                                     <th>Role</th>
@@ -23,6 +29,7 @@
                                     @foreach ($users as $user)
                                         <?php $i++; ?>
                                         <td>{{ $i }}</td>
+                                        <td>{{ $user->school_admin->full_name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->username }}</td>
                                         <td>{{ $user->role }}</td>
@@ -35,14 +42,16 @@
                                             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
                                                 role="document">
                                                 <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="myModalLabel33">Edit User </h4>
-                                                        <button type="button" class="close" data-bs-dismiss="modal"
-                                                            aria-label="Close">
-                                                            <i data-feather="x"></i>
-                                                        </button>
-                                                    </div>
-                                                    <form action="#">
+                                                    <form action="{{route('users.update', [$user->id])}}" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="_method" value="PUT">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="myModalLabel33">Edit User </h4>
+                                                            <button type="button" class="close" data-bs-dismiss="modal"
+                                                                aria-label="Close">
+                                                                <i data-feather="x"></i>
+                                                            </button>
+                                                        </div>
                                                         <div class="modal-body">
                                                             <label>Email: </label>
                                                             <div class="form-group">
@@ -56,37 +65,26 @@
                                                             </div>
                                                             <label>Full Name: </label>
                                                             <div class="form-group">
-                                                                <input type="text" placeholder="Full Name"
-                                                                    class="form-control" value="">
+                                                                <input type="text" name="full_name" placeholder="Full Name"
+                                                                    class="form-control" value="{{$user->school_admin->full_name}}">
                                                             </div>
                                                             <label>Role: </label>
                                                             <div class="form-group">
-                                                                <select name="role" id="role" class="form-control">
-                                                                    <option value="ADMIN" @if ($user->role === 'ADMIN')
-                                                                        selected
-                                                                    @endif>School Admin</option>
-                                                                    <option value="TEACHER" @if ($user->role === 'TEACHER')
-                                                                        selected
-                                                                    @endif>Teacher</option>
-                                                                    <option value="STUDENT" @if ($user->role === 'STUDENT')
-                                                                        selected
-                                                                    @endif>Student</option>
-                                                                </select>
+                                                                <input name="role" id="role" class="form-control" value="{{ $user->role }}" readonly>
                                                             </div>
                                                             <label>Password: </label>
                                                             <div class="form-group">
-                                                                <input type="password" placeholder="Password"
-                                                                    class="form-control" value="" readonly>
+                                                                <input type="password" name="password" placeholder="Password"
+                                                                    class="form-control" value="">
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-light-secondary"
                                                                 data-bs-dismiss="modal">
                                                                 <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Close</span>
+                                                                <span class="d-none d-sm-block">Cancel</span>
                                                             </button>
-                                                            <button type="button" class="btn btn-primary ml-1"
-                                                                data-bs-dismiss="modal">
+                                                            <button type="submit" class="btn btn-primary ml-1">
                                                                 <i class="bx bx-check d-block d-sm-none"></i>
                                                                 <span class="d-none d-sm-block">Save Changes</span>
                                                             </button>
@@ -104,31 +102,34 @@
                                                 <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
                                                     role="document">
                                                     <div class="modal-content">
-                                                        <div class="modal-header bg-danger">
-                                                            <h5 class="modal-title white" id="myModalLabel120">
-                                                                Delete User
-                                                            </h5>
-                                                            <button type="button" class="close"
-                                                                data-bs-dismiss="modal" aria-label="Close">
-                                                                <i data-feather="x"></i>
-                                                            </button>
-                                                        </div>
-                                                        <div class="modal-body">
-                                                            Are you sure you want to delete this user?
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button"
-                                                                class="btn btn-light-secondary"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-x d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Cancel</span>
-                                                            </button>
-                                                            <button type="button" class="btn btn-danger ml-1"
-                                                                data-bs-dismiss="modal">
-                                                                <i class="bx bx-check d-block d-sm-none"></i>
-                                                                <span class="d-none d-sm-block">Yes</span>
-                                                            </button>
-                                                        </div>
+                                                        <form action="{{route('users.destroy', [$user->id])}}" method="post">
+                                                            @csrf
+                                                            <input type="hidden" name="_method" value="DELETE">
+                                                            <div class="modal-header bg-danger">
+                                                                <h5 class="modal-title white" id="myModalLabel120">
+                                                                    Delete User
+                                                                </h5>
+                                                                <button type="button" class="close"
+                                                                    data-bs-dismiss="modal" aria-label="Close">
+                                                                    <i data-feather="x"></i>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                Are you sure you want to delete this user?
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button"
+                                                                    class="btn btn-light-secondary"
+                                                                    data-bs-dismiss="modal">
+                                                                    <i class="bx bx-x d-block d-sm-none"></i>
+                                                                    <span class="d-none d-sm-block">Cancel</span>
+                                                                </button>
+                                                                <button type="submit" class="btn btn-danger ml-1">
+                                                                    <i class="bx bx-check d-block d-sm-none"></i>
+                                                                    <span class="d-none d-sm-block">Yes</span>
+                                                                </button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>

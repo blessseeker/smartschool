@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use App\Models\School;
+use App\Models\SchoolAdmin;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -75,12 +76,19 @@ class RegisterController extends Controller
             'school_name' => $data['school_name']
         ]);
 
-        return User::create([
+        $user = User::create([
             'email' => $data['email'],
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'role' => 'ADMIN',
             'school_id' => $school_id,
         ]);
+
+        SchoolAdmin::create([
+            'full_name' => '',
+            'user_id' => $user->id,
+        ]);
+
+        return $user;
     }
 }
