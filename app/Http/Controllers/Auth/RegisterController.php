@@ -80,7 +80,7 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'password' => Hash::make($data['password']),
             'role' => 'ADMIN',
-            'school_id' => $school->id,
+            'school_id' => $school_id,
         ]);
     }
 }
