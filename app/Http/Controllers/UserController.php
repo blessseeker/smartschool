@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -48,7 +50,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
+        $new_user = new \App\Models\User;
+
+        $email = $request->get('email');
+        $full_name = $request->get('full_name');
+        $role = $request->get('role');
+        $check_email = DB::select("select * from users where email = '".$email."'");
+        if ($check_email) {
+            return redirect('users')->with('error', 'User with email '.$email.' already exists! Please try another email');
+        }
+
+        $new_user->email = $email;
+        $new_user->username = $email;
+        $new_user->password = Hash::make(rand(8, 8));
+        $new_user->school_id = Auth::user()->school_id;
+        $new_user->role = $role;
+        if ($new_user->save()) {
+            if ($role == 'TEACHER') {
+                $new_teacher = new \App\Models\Teacher;
+                $new_teacher->full_name = $full_name;
+                $new_teacher->user_id = $new_user->id;
+                if ($new_teacher->save()) {
+                    return redirect('users')->with('success', 'Teacher with email '.$email.' invited successfully! Make sure the added teacher check the login information sent to his email!');
+                }
+            }
+            if ($role == 'STUDENT') {
+                $new_student = new \App\Models\Student;
+                $new_student->full_name = $full_name;
+                $new_student->user_id = $new_user->id;
+                if ($new_student->save()) {
+                    return redirect('users')->with('success', 'Student with email '.$email.' invited successfully! Make sure the added student check the login information sent to his email!');
+                }
+            }
+        }
     }
 
     /**
@@ -90,7 +125,7 @@ class UserController extends Controller
         }
         $user->password = Hash::make($request->get('password'));
         if ($user->save()) {
-            return redirect('users')->with('status', 'User '.$user->username.' updated successfully');
+            return redirect('users')->with('success', 'User '.$user->username.' updated successfully');
         }
     }
 
@@ -109,7 +144,7 @@ class UserController extends Controller
                 $school_admin = $user->school_admin;
                 $school_admin->delete();
             }
-            return redirect('users')->with('status', 'User '.$user->username.' deleted successfully');
+            return redirect('users')->with('success', 'User '.$user->username.' deleted successfully');
         }
     }
 }
