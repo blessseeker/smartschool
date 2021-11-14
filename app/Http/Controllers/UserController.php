@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -56,6 +57,10 @@ class UserController extends Controller
         $email = $request->get('email');
         $full_name = $request->get('full_name');
         $role = $request->get('role');
+        $school_id = Auth::user()->school_id;
+        $unhashed_password = mt_rand();
+        $password = Hash::make($unhashed_password);
+
         $check_email = DB::select("select * from users where email = '".$email."'");
         if ($check_email) {
             return redirect('users')->with('error', 'User with email '.$email.' already exists! Please try another email');
@@ -63,14 +68,27 @@ class UserController extends Controller
 
         $new_user->email = $email;
         $new_user->username = $email;
-        $new_user->password = Hash::make(rand(8, 8));
-        $new_user->school_id = Auth::user()->school_id;
+        $new_user->password = $password;
+        $new_user->school_id = $school_id;
         $new_user->role = $role;
         if ($new_user->save()) {
+
+            $data = [
+                'email' => $email,
+                'password' => $unhashed_password,
+                'school_id' => $school_id,
+                'full_name' => $full_name,
+            ];
+
+            Mail::send('mail', $data, function($message) use ($data) {
+               $message->to( $data['email'] , $data['full_name'])->subject('Login Information')->from('khoirkamaludin@gmail.com','Smartschool');
+            });
+
             if ($role == 'TEACHER') {
                 $new_teacher = new \App\Models\Teacher;
                 $new_teacher->full_name = $full_name;
                 $new_teacher->user_id = $new_user->id;
+
                 if ($new_teacher->save()) {
                     return redirect('users')->with('success', 'Teacher with email '.$email.' invited successfully! Make sure the added teacher check the login information sent to his email!');
                 }
