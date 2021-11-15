@@ -26,21 +26,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
                                             <?php $i = 0; ?>
                                         @foreach ($users as $user)
                                             @if ($user->role == 'TEACHER')
                                                 <?php $i++; ?>
-                                                <td>{{ $i }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->username }}</td>
-                                                <td>{{ $user->role }}</td>
-                                                <td>
-                                                    <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
-                                                </td>    
+                                                <tr>
+                                                    <td>{{ $i }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td>{{ $user->username }}</td>
+                                                    <td>{{ $user->role }}</td>
+                                                    <td>
+                                                        <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
+                                                    </td>    
+                                                </tr>
                                             @endif
                                         @endforeach
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -56,21 +56,21 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
                                         <?php $i = 0; ?>
                                         @foreach ($users as $user)
                                             @if ($user->role == 'STUDENT')
                                                 <?php $i++; ?>
-                                                <td>{{ $i }}</td>
-                                                <td>{{ $user->email }}</td>
-                                                <td>{{ $user->username }}</td>
-                                                <td>{{ $user->role }}</td>
-                                                <td>
-                                                    <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
-                                                </td>    
+                                                <tr>
+                                                    <td>{{ $i }}</td>
+                                                    <td>{{ $user->email }}</td>
+                                                    <td>{{ $user->username }}</td>
+                                                    <td>{{ $user->role }}</td>
+                                                    <td>
+                                                        <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
+                                                    </td>    
+                                                </tr>
                                             @endif
                                         @endforeach
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
