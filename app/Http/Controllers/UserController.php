@@ -159,10 +159,18 @@ class UserController extends Controller
         
         if ($user->delete()) {
             if ($user->role == 'ADMIN') {
-                $school_admin = $user->school_admin;
-                $school_admin->delete();
+                $user_role = $user->school_admin;
             }
-            return redirect('users')->with('success', 'User '.$user->username.' deleted successfully');
+            if ($user->role == 'TEACHER') {
+                $user_role = $user->teacher;
+            }
+            if ($user->role == 'STUDENT') {
+                $user_role = $user->student;
+            }
+
+            if ($user_role->delete()) {
+                return redirect('users')->with('success', 'User '.$user->username.' deleted successfully');
+            }
         }
     }
 }
