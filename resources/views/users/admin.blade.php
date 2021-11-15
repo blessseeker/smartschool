@@ -82,7 +82,7 @@
                                             $i++;
                                             if ($user->role == 'ADMIN') {
                                                 $full_name = $user->school_admin->full_name;
-                                            } else if ($user->role == 'ADMIN')  {
+                                            } else if ($user->role == 'TEACHER')  {
                                                 $full_name = $user->teacher->full_name;
                                             } else if ($user->role == 'STUDENT')  {
                                                 $full_name = $user->student->full_name;

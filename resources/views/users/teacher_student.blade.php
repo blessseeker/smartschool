@@ -15,13 +15,12 @@
                     </div>
                     <div class="card-body tab-content">
                         <div id="teachers-list" class="tab-pane active">
-                            <table class="table table-striped" id="usersTable">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -32,9 +31,8 @@
                                                 <?php $i++; ?>
                                                 <tr>
                                                     <td>{{ $i }}</td>
+                                                    <td>{{ $user->teacher->full_name }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->username }}</td>
-                                                    <td>{{ $user->role }}</td>
                                                     <td>
                                                         <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
                                                     </td>    
@@ -45,13 +43,12 @@
                             </table>
                         </div>
                         <div id="students-list" class="tab-pane">
-                            <table class="table table-striped" id="usersTable">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
                                         <th>#</th>
+                                        <th>Full Name</th>
                                         <th>Email</th>
-                                        <th>Username</th>
-                                        <th>Role</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
@@ -62,9 +59,8 @@
                                                 <?php $i++; ?>
                                                 <tr>
                                                     <td>{{ $i }}</td>
+                                                    <td>{{ $user->student->full_name }}</td>
                                                     <td>{{ $user->email }}</td>
-                                                    <td>{{ $user->username }}</td>
-                                                    <td>{{ $user->role }}</td>
                                                     <td>
                                                         <button class="btn btn-primary"><i class="bi bi-chat"></i></button>
                                                     </td>    
