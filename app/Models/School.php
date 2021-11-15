@@ -12,9 +12,18 @@ class School extends Model
 
     protected $guarded = [];
 
+
+
+    /**
+     * Generate new school ID.
+     *
+     * @return school_id
+     */
     public function createNewSchoolID($left_id)
     {
+        // Determine highest right number based on 7 left characters 
         $latest_right_id = DB::select("select MAX(RIGHT(id,3)) as max_id from schools where LEFT(id, 7) = '".$left_id."'");
+        // Generate new right id
         $new_right_id = "";
         if(count($latest_right_id)>0) {
             $int_new_right_id = ((int)$latest_right_id[0]->max_id)+1;
@@ -22,6 +31,8 @@ class School extends Model
         } else {
             $new_right_id = "001";
         }   
+
+        // return new id 
         return $left_id."".$new_right_id;
     }
 

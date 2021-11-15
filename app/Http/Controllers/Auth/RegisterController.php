@@ -67,15 +67,19 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+
+        // Generate school ID
         $left_id = 'SCH'.date('y').date('m');
         $school = new School();
         $school_id = $school->createNewSchoolID($left_id);
 
+        // Create new school
         $school = School::create([
             'id' => $school_id,
             'school_name' => $data['school_name']
         ]);
 
+        // Create new user
         $user = User::create([
             'email' => $data['email'],
             'username' => $data['username'],
@@ -84,6 +88,7 @@ class RegisterController extends Controller
             'school_id' => $school_id,
         ]);
 
+        // Create new School Admin
         SchoolAdmin::create([
             'full_name' => '',
             'user_id' => $user->id,

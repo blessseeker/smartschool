@@ -40,6 +40,11 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    /**
+     * Make capability to login using username.
+     *
+     * @return field
+     */
     public function username()
     {
         $login = request()->input('username');
@@ -53,6 +58,10 @@ class LoginController extends Controller
         return $field;
     }
 
+    /**
+     * Validating login input.
+     *
+     */
     protected function sendFailedLoginResponse(Request $request)
     {
         throw ValidationException::withMessages([
@@ -62,6 +71,11 @@ class LoginController extends Controller
         ]);
     }
     
+    /**
+     * Add school ID to login requirement .
+     *
+     * @return credentials
+     */
     public function credentials(Request $request)
     {
         $credentials = $request->only($this->username(), 'password');

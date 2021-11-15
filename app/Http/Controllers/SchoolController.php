@@ -82,9 +82,4 @@ class SchoolController extends Controller
     {
         //
     }
-
-    public function getSchoolID($left_id)
-    {
-        # code...
-    }
 }
